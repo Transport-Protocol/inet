@@ -31,7 +31,7 @@ Ieee80211HTMode::Ieee80211HTMode(const Ieee80211HTPreambleMode* preambleMode, co
 Ieee80211HTModeBase::Ieee80211HTModeBase(unsigned int modulationAndCodingScheme, unsigned int numberOfSpatialStreams, const Hz bandwidth, GuardIntervalType guardIntervalType) :
         bandwidth(bandwidth),
         guardIntervalType(guardIntervalType),
-        modulationAndCodingScheme(modulationAndCodingScheme),
+        mcsIndex(modulationAndCodingScheme),
         numberOfSpatialStreams(numberOfSpatialStreams),
         netBitrate(bps(NaN)),
         grossBitrate(bps(NaN))
@@ -61,25 +61,31 @@ Ieee80211HTSignalMode::Ieee80211HTSignalMode(unsigned int modulationAndCodingSch
 }
 
 
-Ieee80211HTDataMode::Ieee80211HTDataMode(unsigned int modulationAndCodingScheme, unsigned int numberOfBCCEncoders, const Ieee80211HTCode* code, const Ieee80211OFDMModulation* stream1Modulation, const Ieee80211OFDMModulation* stream2Modulation, const Ieee80211OFDMModulation* stream3Modulation, const Ieee80211OFDMModulation* stream4Modulation, const Hz bandwidth, GuardIntervalType guardIntervalType) :
-        Ieee80211HTModeBase(modulationAndCodingScheme, computeNumberOfSpatialStreams(stream1Modulation,stream2Modulation, stream3Modulation, stream4Modulation), bandwidth, guardIntervalType),
-        stream1Modulation(stream1Modulation),
-        stream2Modulation(stream2Modulation),
-        stream3Modulation(stream3Modulation),
-        stream4Modulation(stream4Modulation),
-        code(code),
-        numberOfBCCEncoders(numberOfBCCEncoders)
+Ieee80211HTDataMode::Ieee80211HTDataMode(const Ieee80211HTMCS *modulationAndCodingScheme, unsigned int mcsIndex, unsigned int numberOfBCCEncoders, const Ieee80211OFDMModulation* stream1Modulation, const Ieee80211OFDMModulation* stream2Modulation, const Ieee80211OFDMModulation* stream3Modulation, const Ieee80211OFDMModulation* stream4Modulation, const Hz bandwidth, GuardIntervalType guardIntervalType) :
+        Ieee80211HTModeBase(mcsIndex, computeNumberOfSpatialStreams(stream1Modulation,stream2Modulation, stream3Modulation, stream4Modulation), bandwidth, guardIntervalType),
+        modulationAndCodingScheme(modulationAndCodingScheme)
 {
 }
 
-Ieee80211HTDataMode::Ieee80211HTDataMode(unsigned int modulationAndCodingScheme, unsigned int numberOfBCCEncoders, const Ieee80211OFDMModulation* stream1Modulation, const Ieee80211OFDMModulation* stream2Modulation, const Ieee80211OFDMModulation* stream3Modulation, const Ieee80211OFDMModulation* stream4Modulation, const Ieee80211ConvolutionalCode *convolutionalCode, const Hz bandwidth, GuardIntervalType guardIntervalType) :
-        Ieee80211HTModeBase(modulationAndCodingScheme, computeNumberOfSpatialStreams(stream1Modulation,stream2Modulation, stream3Modulation, stream4Modulation), bandwidth, guardIntervalType),
-        stream1Modulation(stream1Modulation),
-        stream2Modulation(stream2Modulation),
-        stream3Modulation(stream3Modulation),
-        stream4Modulation(stream4Modulation),
-        code(Ieee80211HTCompliantCodes::getCompliantCode(convolutionalCode, stream1Modulation, stream2Modulation, stream3Modulation, stream4Modulation, bandwidth)),
-        numberOfBCCEncoders(numberOfBCCEncoders)
+Ieee80211HTMCS::Ieee80211HTMCS(unsigned int mcsIndex, unsigned int numberOfBCCEncoders, const Ieee80211HTCode* code, const Ieee80211OFDMModulation* stream1Modulation, const Ieee80211OFDMModulation* stream2Modulation, const Ieee80211OFDMModulation* stream3Modulation, const Ieee80211OFDMModulation* stream4Modulation) :
+    mcsIndex(mcsIndex),
+    stream1Modulation(stream1Modulation),
+    stream2Modulation(stream2Modulation),
+    stream3Modulation(stream3Modulation),
+    stream4Modulation(stream4Modulation),
+    code(code),
+    numberOfBCCEncoders(numberOfBCCEncoders)
+{
+}
+
+Ieee80211HTMCS::Ieee80211HTMCS(unsigned int mcsIndex, unsigned int numberOfBCCEncoders, const Ieee80211OFDMModulation* stream1Modulation, const Ieee80211OFDMModulation* stream2Modulation, const Ieee80211OFDMModulation* stream3Modulation, const Ieee80211OFDMModulation* stream4Modulation, const Ieee80211ConvolutionalCode* convolutionalCode, Hz bandwidth) :
+    mcsIndex(mcsIndex),
+    stream1Modulation(stream1Modulation),
+    stream2Modulation(stream2Modulation),
+    stream3Modulation(stream3Modulation),
+    stream4Modulation(stream4Modulation),
+    code(Ieee80211HTCompliantCodes::getCompliantCode(convolutionalCode, stream1Modulation, stream2Modulation, stream3Modulation, stream4Modulation, bandwidth)),
+    numberOfBCCEncoders(numberOfBCCEncoders)
 {
 }
 
@@ -101,10 +107,7 @@ bps Ieee80211HTSignalMode::computeNetBitrate() const
 
 bps Ieee80211HTDataMode::computeGrossBitrate() const
 {
-    unsigned int numberOfCodedBitsPerSubcarrierSum = stream1Modulation ? stream1Modulation->getSubcarrierModulation()->getCodeWordSize() : 0 +
-                                                     stream2Modulation ? stream2Modulation->getSubcarrierModulation()->getCodeWordSize() : 0 +
-                                                     stream3Modulation ? stream3Modulation->getSubcarrierModulation()->getCodeWordSize() : 0 +
-                                                     stream4Modulation ? stream4Modulation->getSubcarrierModulation()->getCodeWordSize() : 0;
+    unsigned int numberOfCodedBitsPerSubcarrierSum = computeNumberOfCodedBitsPerSubcarrierSum();
     unsigned int numberOfCodedBitsPerSymbol = numberOfCodedBitsPerSubcarrierSum * getNumberOfDataSubcarriers();
     if (guardIntervalType == HT_GUARD_INTERVAL_LONG)
         return bps(numberOfCodedBitsPerSymbol / getSymbolInterval());
@@ -116,7 +119,7 @@ bps Ieee80211HTDataMode::computeGrossBitrate() const
 
 bps Ieee80211HTDataMode::computeNetBitrate() const
 {
-    return computeGrossBitrate() * code->getForwardErrorCorrection()->getCodeRate();
+    return computeGrossBitrate() * getCode()->getForwardErrorCorrection()->getCodeRate();
 }
 
 bps Ieee80211HTModeBase::getNetBitrate() const
@@ -188,7 +191,7 @@ int Ieee80211HTModeBase::getNumberOfDataSubcarriers() const
     else if (bandwidth == MHz(40))
         // It is a special case, see Table 20-38—MCS parameters for
         // optional 40 MHz MCS 32 format, N SS = 1, N ES = 1
-        return modulationAndCodingScheme == 32 ? 48 : 108;
+        return mcsIndex == 32 ? 48 : 108;
     else
         throw cRuntimeError("Unsupported bandwidth");
 }
@@ -199,7 +202,7 @@ int Ieee80211HTModeBase::getNumberOfPilotSubcarriers() const
         return 4;
     else if (bandwidth == MHz(40))
         // It is a spacial case, see the comment above.
-        return modulationAndCodingScheme == 32 ? 4 : 6;
+        return mcsIndex == 32 ? 4 : 6;
     else
         throw cRuntimeError("Unsupported bandwidth");
 }
@@ -225,14 +228,20 @@ unsigned int Ieee80211HTDataMode::computeNumberOfSpatialStreams(const Ieee80211O
            stream3Modulation ? 1 : 0 + stream4Modulation ? 1 : 0;
 }
 
+unsigned int Ieee80211HTDataMode::computeNumberOfCodedBitsPerSubcarrierSum() const
+{
+    return
+        modulationAndCodingScheme->getModulation() ? modulationAndCodingScheme->getModulation()->getSubcarrierModulation()->getCodeWordSize() : 0 +
+        modulationAndCodingScheme->getStreamExtension1Modulation() ? modulationAndCodingScheme->getStreamExtension1Modulation()->getSubcarrierModulation()->getCodeWordSize() : 0 +
+        modulationAndCodingScheme->getStreamExtension2Modulation()? modulationAndCodingScheme->getStreamExtension2Modulation()->getSubcarrierModulation()->getCodeWordSize() : 0 +
+        modulationAndCodingScheme->getStreamExtension3Modulation() ? modulationAndCodingScheme->getStreamExtension3Modulation()->getSubcarrierModulation()->getCodeWordSize() : 0;
+}
+
 const simtime_t Ieee80211HTDataMode::getDuration(int dataBitLength) const
 {
-    unsigned int numberOfCodedBitsPerSubcarrierSum = stream1Modulation ? stream1Modulation->getSubcarrierModulation()->getCodeWordSize() : 0 +
-                                                         stream2Modulation ? stream2Modulation->getSubcarrierModulation()->getCodeWordSize() : 0 +
-                                                         stream3Modulation ? stream3Modulation->getSubcarrierModulation()->getCodeWordSize() : 0 +
-                                                         stream4Modulation ? stream4Modulation->getSubcarrierModulation()->getCodeWordSize() : 0;
+    unsigned int numberOfCodedBitsPerSubcarrierSum = computeNumberOfCodedBitsPerSubcarrierSum();
     unsigned int numberOfCodedBitsPerSymbol = numberOfCodedBitsPerSubcarrierSum * getNumberOfDataSubcarriers();
-    const IForwardErrorCorrection *forwardErrorCorrection = code ? code->getForwardErrorCorrection() : nullptr;
+    const IForwardErrorCorrection *forwardErrorCorrection = getCode() ? getCode()->getForwardErrorCorrection() : nullptr;
     unsigned int dataBitsPerSymbol = forwardErrorCorrection ? forwardErrorCorrection->getDecodedLength(numberOfCodedBitsPerSymbol) : numberOfCodedBitsPerSymbol;
     int numberOfSymbols = lrint(ceil((double)getBitLength(dataBitLength) / dataBitsPerSymbol)); // TODO: getBitLength(dataBitLength) should be divisible by dataBitsPerSymbol
     return numberOfSymbols * getSymbolInterval();
@@ -268,7 +277,7 @@ const simtime_t Ieee80211HTMode::getShortSlotTime() const
 }
 
 
-Ieee80211HTDataMode::~Ieee80211HTDataMode()
+Ieee80211HTMCS::~Ieee80211HTMCS()
 {
     delete code;
 }
@@ -278,6 +287,7 @@ Ieee80211HTSignalMode::~Ieee80211HTSignalMode()
     delete code;
 }
 
+//const Ieee80211HTSignalMode Ieee80211HTModulationAndCodingSchemes::valami;
+
 } /* namespace physicallayer */
 } /* namespace inet */
-
