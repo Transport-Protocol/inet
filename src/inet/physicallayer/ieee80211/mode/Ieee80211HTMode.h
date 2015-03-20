@@ -172,10 +172,14 @@ class INET_API Ieee80211HTMCS
         const Ieee80211OFDMModulation *stream3Modulation;
         const Ieee80211OFDMModulation *stream4Modulation;
         const Ieee80211HTCode *code;
+        Hz bandwidth;
 
     public:
         Ieee80211HTMCS(unsigned int mcsIndex, const Ieee80211HTCode *code, const Ieee80211OFDMModulation *stream1Modulation, const Ieee80211OFDMModulation *stream2Modulation, const Ieee80211OFDMModulation *stream3Modulation, const Ieee80211OFDMModulation *stream4Modulation);
         Ieee80211HTMCS(unsigned int mcsIndex, const Ieee80211OFDMModulation *stream1Modulation, const Ieee80211OFDMModulation *stream2Modulation, const Ieee80211OFDMModulation *stream3Modulation, const Ieee80211OFDMModulation *stream4Modulation, const Ieee80211ConvolutionalCode *convolutionalCode, Hz bandwidth);
+        Ieee80211HTMCS(unsigned int mcsIndex, const Ieee80211OFDMModulation *stream1Modulation, const Ieee80211OFDMModulation *stream2Modulation, const Ieee80211OFDMModulation *stream3Modulation, const Ieee80211ConvolutionalCode *convolutionalCode, Hz bandwidth);
+        Ieee80211HTMCS(unsigned int mcsIndex, const Ieee80211OFDMModulation *stream1Modulation, const Ieee80211OFDMModulation *stream2Modulation, const Ieee80211ConvolutionalCode *convolutionalCode, Hz bandwidth);
+        Ieee80211HTMCS(unsigned int mcsIndex, const Ieee80211OFDMModulation *stream1Modulation, const Ieee80211ConvolutionalCode *convolutionalCode, Hz bandwidth);
         virtual ~Ieee80211HTMCS();
 
         const Ieee80211HTCode* getCode() const { return code; }
@@ -183,6 +187,7 @@ class INET_API Ieee80211HTMCS
         virtual const Ieee80211OFDMModulation* getStreamExtension1Modulation() const { return stream2Modulation; }
         virtual const Ieee80211OFDMModulation* getStreamExtension2Modulation() const { return stream3Modulation; }
         virtual const Ieee80211OFDMModulation* getStreamExtension3Modulation() const { return stream4Modulation; }
+        virtual const Hz getBandwidth() const { return bandwidth; }
 };
 
 class INET_API Ieee80211HTDataMode : public IIeee80211DataMode, public Ieee80211HTModeBase, public Ieee80211HTTimingRelatedParametersBase

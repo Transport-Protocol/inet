@@ -84,7 +84,41 @@ Ieee80211HTMCS::Ieee80211HTMCS(unsigned int mcsIndex, const Ieee80211OFDMModulat
     stream2Modulation(stream2Modulation),
     stream3Modulation(stream3Modulation),
     stream4Modulation(stream4Modulation),
-    code(Ieee80211HTCompliantCodes::getCompliantCode(convolutionalCode, stream1Modulation, stream2Modulation, stream3Modulation, stream4Modulation, bandwidth))
+    code(Ieee80211HTCompliantCodes::getCompliantCode(convolutionalCode, stream1Modulation, stream2Modulation, stream3Modulation, stream4Modulation, bandwidth)),
+    bandwidth(bandwidth)
+{
+}
+
+Ieee80211HTMCS::Ieee80211HTMCS(unsigned int mcsIndex, const Ieee80211OFDMModulation* stream1Modulation, const Ieee80211OFDMModulation* stream2Modulation, const Ieee80211OFDMModulation* stream3Modulation, const Ieee80211ConvolutionalCode* convolutionalCode, Hz bandwidth) :
+    mcsIndex(mcsIndex),
+    stream1Modulation(stream1Modulation),
+    stream2Modulation(stream2Modulation),
+    stream3Modulation(stream3Modulation),
+    stream4Modulation(nullptr),
+    code(Ieee80211HTCompliantCodes::getCompliantCode(convolutionalCode, stream1Modulation, stream2Modulation, stream3Modulation, stream4Modulation, bandwidth)),
+    bandwidth(bandwidth)
+{
+}
+
+Ieee80211HTMCS::Ieee80211HTMCS(unsigned int mcsIndex, const Ieee80211OFDMModulation* stream1Modulation, const Ieee80211OFDMModulation* stream2Modulation, const Ieee80211ConvolutionalCode* convolutionalCode, Hz bandwidth) :
+    mcsIndex(mcsIndex),
+    stream1Modulation(stream1Modulation),
+    stream2Modulation(stream2Modulation),
+    stream3Modulation(nullptr),
+    stream4Modulation(nullptr),
+    code(Ieee80211HTCompliantCodes::getCompliantCode(convolutionalCode, stream1Modulation, stream2Modulation, stream3Modulation, stream4Modulation, bandwidth)),
+    bandwidth(bandwidth)
+{
+}
+
+Ieee80211HTMCS::Ieee80211HTMCS(unsigned int mcsIndex, const Ieee80211OFDMModulation* stream1Modulation, const Ieee80211ConvolutionalCode* convolutionalCode, Hz bandwidth) :
+    mcsIndex(mcsIndex),
+    stream1Modulation(stream1Modulation),
+    stream2Modulation(nullptr),
+    stream3Modulation(nullptr),
+    stream4Modulation(nullptr),
+    code(Ieee80211HTCompliantCodes::getCompliantCode(convolutionalCode, stream1Modulation, stream2Modulation, stream3Modulation, stream4Modulation, bandwidth)),
+    bandwidth(bandwidth)
 {
 }
 
