@@ -327,7 +327,105 @@ Ieee80211HTSignalMode::~Ieee80211HTSignalMode()
     delete code;
 }
 
-//const Ieee80211HTSignalMode Ieee80211HTModulationAndCodingSchemes::valami;
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs0BW20MHz(0, &Ieee80211OFDMCompliantModulations::bpskModulation, &Ieee80211OFDMCompliantCodes::ofdmConvolutionalCode1_2, MHz(20));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs1BW20MHz(1, &Ieee80211OFDMCompliantModulations::qpskModulation, &Ieee80211OFDMCompliantCodes::ofdmConvolutionalCode1_2, MHz(20));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs2BW20MHz(2, qpsk, 3/4, MHz(20));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs3BW20MHz(3, 16qam, 1/2, MHz(20));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs4BW20MHz(4, 16qam, 3/4, MHz(20));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs5BW20MHz(5, 64qam, 2/3, MHz(20));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs6BW20MHz(6, 64qam, 3/4, MHz(20));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs7BW20MHz(7, 64qam, 5/6, MHz(20));
+
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs8BW20MHz(8, bpsk, bpsk, 1/2, MHz(20));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs9BW20MHz(9, qpsk, qpsk, 1/2, MHz(20));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs10BW20MHz(10, qpsk, qpsk, 3/4, MHz(20));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs11BW20MHz(11, 16qam, 16qam, 1/2, MHz(20));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs12BW20MHz(12, 16qam, 16qam, 3/4, MHz(20));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs13BW20MHz(13, 64qam, 16qam, 2/3, MHz(20));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs14BW20MHz(14, 64qam, 64qam, 3/4, MHz(20));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs15BW20MHz(15, 64qam, 64qam, 5/6, MHz(20));
+
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs16BW20MHz(16, bpsk, bpsk, bpsk, 1/2, MHz(20));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs17BW20MHz(17, qpsk, qpsk, qpsk, 1/2, MHz(20));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs18BW20MHz(18, qpsk, qpsk, qpsk, 3/4, MHz(20));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs19BW20MHz(19, 16qam, 16qam, 16qam, 1/2, MHz(20));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs20BW20MHz(20, 16qam, 16qam, 16qam, 3/4, MHz(20));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs21BW20MHz(21, 64qam, 16qam, 64qam, 2/3, MHz(20));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs22BW20MHz(22, 64qam, 64qam, 64qam, 3/4, MHz(20));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs23BW20MHz(23, 64qam, 64qam, 64qam, 5/6, MHz(20));
+
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs24BW20MHz(24, bpsk, bpsk, bpsk, bpsk, 1/2, MHz(20));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs25BW20MHz(25, qpsk, qpsk, qpsk, qpsk, 1/2, MHz(20));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs26BW20MHz(26, qpsk, qpsk, qpsk, qpsk, 3/4, MHz(20));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs27BW20MHz(27, 16qam, 16qam, 16qam, 16qam, 1/2, MHz(20));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs28BW20MHz(28, 16qam, 16qam, 16qam, 16qam, 3/4, MHz(20));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs29BW20MHz(29, 64qam, 16qam, 64qam, 64qam, 2/3, MHz(20));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs30BW20MHz(30, 64qam, 64qam, 64qam, 64qam, 3/4, MHz(20));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs31BW20MHz(31, 64qam, 64qam, 64qam, 64qam, 5/6, MHz(20));
+
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs0BW20MHz(0, bpsk, MHz(40));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs1BW20MHz(1, bpsk, MHz(40));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs2BW20MHz(2, qpsk, 3/4, MHz(40));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs3BW20MHz(3, 16qam, 1/2, MHz(40));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs4BW20MHz(4, 16qam, 3/4, MHz(40));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs5BW20MHz(5, 64qam, 2/3, MHz(40));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs6BW20MHz(6, 64qam, 3/4, MHz(40));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs7BW20MHz(7, 64qam, 5/6, MHz(40));
+
+
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs8BW40MHz(8, bpsk, bpsk, 1/2, MHz(40));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs9BW40MHz(9, qpsk, qpsk, 1/2, MHz(40));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs10BW40MHz(10, qpsk, qpsk, 3/4, MHz(40));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs11BW40MHz(11, 16qam, 16qam, 1/2, MHz(40));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs12BW40MHz(12, 16qam, 16qam, 3/4, MHz(40));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs13BW40MHz(13, 64qam, 16qam, 2/3, MHz(40));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs14BW40MHz(14, 64qam, 64qam, 3/4, MHz(40));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs15BW40MHz(15, 64qam, 64qam, 5/6, MHz(40));
+
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs16BW40MHz(16, bpsk, bpsk, bpsk, 1/2, MHz(40));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs17BW40MHz(17, qpsk, qpsk, qpsk, 1/2, MHz(40));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs18BW40MHz(18, qpsk, qpsk, qpsk, 3/4, MHz(40));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs19BW40MHz(19, 16qam, 16qam, 16qam, 1/2, MHz(40));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs20BW40MHz(20, 16qam, 16qam, 16qam, 3/4, MHz(40));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs21BW40MHz(21, 64qam, 16qam, 64qam, 2/3, MHz(40));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs22BW40MHz(22, 64qam, 64qam, 64qam, 3/4, MHz(40));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs23BW40MHz(23, 64qam, 64qam, 64qam, 5/6, MHz(40));
+
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs24BW40MHz(24, bpsk, bpsk, bpsk, bpsk, 1/2, MHz(40));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs25BW40MHz(25, qpsk, qpsk, qpsk, qpsk, 1/2, MHz(40));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs26BW40MHz(26, qpsk, qpsk, qpsk, qpsk, 3/4, MHz(40));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs27BW40MHz(27, 16qam, 16qam, 16qam, 16qam, 1/2, MHz(40));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs28BW40MHz(28, 16qam, 16qam, 16qam, 16qam, 3/4, MHz(40));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs29BW40MHz(29, 64qam, 16qam, 64qam, 64qam, 2/3, MHz(40));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs30BW40MHz(30, 64qam, 64qam, 64qam, 64qam, 3/4, MHz(40));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs31BW40MHz(31, 64qam, 64qam, 64qam, 64qam, 5/6, MHz(40));
+
+//const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs32BW20MHz(24, bpsk, bpsk, bpsk, bpsk, 1/2, MHz(40)); FIXME
+
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs33BW20MHz(33, 16qam, qpsk, 1/2, MHz(20));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs34BW20MHz(34, 64qam, qpsk, 1/2, MHz(20));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs35BW20MHz(35, 64qam, 16qam, 1/2, MHz(20));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs36BW20MHz(36, 16qam, qpsk, 3/4, MHz(20));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs37BW20MHz(37, 64qam, qpsk, 3/4, MHz(20));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs38BW20MHz(38, 64qam, 16qam, 3/4, MHz(20));
+
+
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs39BW20MHz(39, 16qam, qpsk, qpsk, 1/2, MHz(20));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs40BW20MHz(40, 16qam, 16qam, qpsk, 1/2, MHz(20));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs41BW20MHz(41, 64qam, qpsk, qpsk, 1/2, MHz(20));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs42BW20MHz(42, 64qam, 16qam, qpsk, 1/2, MHz(20));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs43BW20MHz(43, 64qam, 16qam, 16qam, 1/2, MHz(20));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs44BW20MHz(44, 64qam, 64qam, qpsk, 1/2, MHz(20));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs45BW20MHz(45, 64qam, 64qam, 16qam, 1/2, MHz(20));
+
+// itt hagytam abba
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs46BW20MHz(46, 64qam, 16qam, 64qam, 2/3, MHz(20));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs47BW20MHz(47, 64qam, 64qam, 64qam, 3/4, MHz(20));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs48BW20MHz(48, 64qam, 64qam, 64qam, 5/6, MHz(20));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs49BW20MHz(49, 64qam, 64qam, 64qam, 5/6, MHz(20));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs50BW20MHz(50, 64qam, 64qam, 64qam, 5/6, MHz(20));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs51BW20MHz(51, 64qam, 64qam, 64qam, 5/6, MHz(20));
+const Ieee80211HTMCS Ieee80211HTMCSTable::htMcs52BW20MHz(52, 64qam, 64qam, 64qam, 5/6, MHz(20));
 
 } /* namespace physicallayer */
 } /* namespace inet */

@@ -223,7 +223,7 @@ class INET_API Ieee80211HTMode : public IIeee80211Mode
     protected:
         const Ieee80211HTPreambleMode *preambleMode;
         const Ieee80211HTDataMode *dataMode;
-        const Hz carrierFrequency; // TODO: revise
+        const Hz carrierFrequency;
 
     public:
         Ieee80211HTMode(const Ieee80211HTPreambleMode *preambleMode, const Ieee80211HTDataMode *dataMode, const Hz carrierFrequency);
@@ -256,10 +256,115 @@ class INET_API Ieee80211HTMode : public IIeee80211Mode
 // parameters that consists of modulation order (e.g., BPSK, QPSK, 16-QAM,
 // 64-QAM) and forward error correction (FEC) coding rate (e.g., 1/2, 2/3,
 // 3/4, 5/6).
-class INET_API Ieee80211HTModulationAndCodingSchemes
+class INET_API Ieee80211HTMCSTable
 {
     public:
-//        static const Ieee80211HTDataMode valami;
+        // Table 20-30—MCS parameters for mandatory 20 MHz, N_SS = 1, N_ES = 1
+        static const Ieee80211HTMCS htMcs0BW20MHz;
+        static const Ieee80211HTMCS htMcs1BW20MHz;
+        static const Ieee80211HTMCS htMcs2BW20MHz;
+        static const Ieee80211HTMCS htMcs3BW20MHz;
+        static const Ieee80211HTMCS htMcs4BW20MHz;
+        static const Ieee80211HTMCS htMcs5BW20MHz;
+        static const Ieee80211HTMCS htMcs6BW20MHz;
+        static const Ieee80211HTMCS htMcs7BW20MHz;
+
+        // Table 20-31—MCS parameters for optional 20 MHz, N_SS = 2, N_ES = 1, EQM
+        static const Ieee80211HTMCS htMcs8BW20MHz;
+        static const Ieee80211HTMCS htMcs9BW20MHz;
+        static const Ieee80211HTMCS htMcs10BW20MHz;
+        static const Ieee80211HTMCS htMcs11BW20MHz;
+        static const Ieee80211HTMCS htMcs12BW20MHz;
+        static const Ieee80211HTMCS htMcs13BW20MHz;
+        static const Ieee80211HTMCS htMcs14BW20MHz;
+        static const Ieee80211HTMCS htMcs15BW20MHz;
+
+        // Table 20-32—MCS parameters for optional 20 MHz, N_SS = 3, N_ES = 1, EQM
+        static const Ieee80211HTMCS htMcs16BW20MHz;
+        static const Ieee80211HTMCS htMcs17BW20MHz;
+        static const Ieee80211HTMCS htMcs18BW20MHz;
+        static const Ieee80211HTMCS htMcs19BW20MHz;
+        static const Ieee80211HTMCS htMcs20BW20MHz;
+        static const Ieee80211HTMCS htMcs21BW20MHz;
+        static const Ieee80211HTMCS htMcs22BW20MHz;
+        static const Ieee80211HTMCS htMcs23BW20MHz;
+
+        // Table 20-33—MCS parameters for optional 20 MHz, N_SS = 4, N_ES = 1, EQM
+        static const Ieee80211HTMCS htMcs24BW20MHz;
+        static const Ieee80211HTMCS htMcs25BW20MHz;
+        static const Ieee80211HTMCS htMcs26BW20MHz;
+        static const Ieee80211HTMCS htMcs27BW20MHz;
+        static const Ieee80211HTMCS htMcs28BW20MHz;
+        static const Ieee80211HTMCS htMcs29BW20MHz;
+        static const Ieee80211HTMCS htMcs30BW20MHz;
+        static const Ieee80211HTMCS htMcs31BW20MHz;
+
+        // Table 20-34—MCS parameters for optional 40 MHz, N_SS = 1, N_ES = 1
+        static const Ieee80211HTMCS htMcs0BW40MHz;
+        static const Ieee80211HTMCS htMcs1BW40MHz;
+        static const Ieee80211HTMCS htMcs2BW40MHz;
+        static const Ieee80211HTMCS htMcs3BW40MHz;
+        static const Ieee80211HTMCS htMcs4BW40MHz;
+        static const Ieee80211HTMCS htMcs5BW40MHz;
+        static const Ieee80211HTMCS htMcs6BW40MHz;
+        static const Ieee80211HTMCS htMcs7BW40MHz;
+
+        // Table 20-35—MCS parameters for optional 40 MHz, N_SS = 2, N_ES = 1, EQM
+        static const Ieee80211HTMCS htMcs8BW40MHz;
+        static const Ieee80211HTMCS htMcs9BW40MHz;
+        static const Ieee80211HTMCS htMcs10BW40MHz;
+        static const Ieee80211HTMCS htMcs11BW40MHz;
+        static const Ieee80211HTMCS htMcs12BW40MHz;
+        static const Ieee80211HTMCS htMcs13BW40MHz;
+        static const Ieee80211HTMCS htMcs14BW40MHz;
+        static const Ieee80211HTMCS htMcs15BW40MHz;
+
+        // Table 20-36—MCS parameters for optional 40 MHz, N_SS = 3, EQM
+        static const Ieee80211HTMCS htMcs16BW40MHz;
+        static const Ieee80211HTMCS htMcs17BW40MHz;
+        static const Ieee80211HTMCS htMcs18BW40MHz;
+        static const Ieee80211HTMCS htMcs19BW40MHz;
+        static const Ieee80211HTMCS htMcs20BW40MHz;
+        static const Ieee80211HTMCS htMcs21BW40MHz;
+        static const Ieee80211HTMCS htMcs22BW40MHz;
+        static const Ieee80211HTMCS htMcs23BW40MHz;
+
+        // Table 20-37—MCS parameters for optional 40 MHz, N_SS = 4, EQM
+        static const Ieee80211HTMCS htMcs24BW40MHz;
+        static const Ieee80211HTMCS htMcs25BW40MHz;
+        static const Ieee80211HTMCS htMcs26BW40MHz;
+        static const Ieee80211HTMCS htMcs27BW40MHz;
+        static const Ieee80211HTMCS htMcs28BW40MHz;
+        static const Ieee80211HTMCS htMcs29BW40MHz;
+        static const Ieee80211HTMCS htMcs30BW40MHz;
+        static const Ieee80211HTMCS htMcs31BW40MHz;
+
+        // Table 20-38—MCS parameters for optional 40 MHz MCS 32 format, N_SS = 1, N_ES = 1
+        static const Ieee80211HTMCS htMcs32BW40MHz;
+
+        // Table 20-39—MCS parameters for optional 20 MHz, N_SS = 2, N_ES = 1, UEQM
+        static const Ieee80211HTMCS htMcs33BW20MHz;
+        static const Ieee80211HTMCS htMcs34BW20MHz;
+        static const Ieee80211HTMCS htMcs35BW20MHz;
+        static const Ieee80211HTMCS htMcs36BW20MHz;
+        static const Ieee80211HTMCS htMcs37BW20MHz;
+        static const Ieee80211HTMCS htMcs38BW20MHz;
+
+        // Table 20-40—MCS parameters for optional 20 MHz, N SS = 3, N ES = 1, UEQM
+        static const Ieee80211HTMCS htMcs39BW20MHz;
+        static const Ieee80211HTMCS htMcs40BW20MHz;
+        static const Ieee80211HTMCS htMcs41BW20MHz;
+        static const Ieee80211HTMCS htMcs42BW20MHz;
+        static const Ieee80211HTMCS htMcs43BW20MHz;
+        static const Ieee80211HTMCS htMcs44BW20MHz;
+        static const Ieee80211HTMCS htMcs45BW20MHz;
+        static const Ieee80211HTMCS htMcs46BW20MHz;
+        static const Ieee80211HTMCS htMcs47BW20MHz;
+        static const Ieee80211HTMCS htMcs48BW20MHz;
+        static const Ieee80211HTMCS htMcs49BW20MHz;
+        static const Ieee80211HTMCS htMcs50BW20MHz;
+        static const Ieee80211HTMCS htMcs51BW20MHz;
+        static const Ieee80211HTMCS htMcs52BW20MHz;
 };
 
 } /* namespace physicallayer */
