@@ -172,11 +172,10 @@ class INET_API Ieee80211HTMCS
         const Ieee80211OFDMModulation *stream3Modulation;
         const Ieee80211OFDMModulation *stream4Modulation;
         const Ieee80211HTCode *code;
-        unsigned int numberOfBCCEncoders;
 
     public:
-        Ieee80211HTMCS(unsigned int mcsIndex, unsigned int numberOfBCCEncoders, const Ieee80211HTCode *code, const Ieee80211OFDMModulation *stream1Modulation, const Ieee80211OFDMModulation *stream2Modulation, const Ieee80211OFDMModulation *stream3Modulation, const Ieee80211OFDMModulation *stream4Modulation);
-        Ieee80211HTMCS(unsigned int mcsIndex, unsigned int numberOfBCCEncoders, const Ieee80211OFDMModulation *stream1Modulation, const Ieee80211OFDMModulation *stream2Modulation, const Ieee80211OFDMModulation *stream3Modulation, const Ieee80211OFDMModulation *stream4Modulation, const Ieee80211ConvolutionalCode *convolutionalCode, Hz bandwidth);
+        Ieee80211HTMCS(unsigned int mcsIndex, const Ieee80211HTCode *code, const Ieee80211OFDMModulation *stream1Modulation, const Ieee80211OFDMModulation *stream2Modulation, const Ieee80211OFDMModulation *stream3Modulation, const Ieee80211OFDMModulation *stream4Modulation);
+        Ieee80211HTMCS(unsigned int mcsIndex, const Ieee80211OFDMModulation *stream1Modulation, const Ieee80211OFDMModulation *stream2Modulation, const Ieee80211OFDMModulation *stream3Modulation, const Ieee80211OFDMModulation *stream4Modulation, const Ieee80211ConvolutionalCode *convolutionalCode, Hz bandwidth);
         virtual ~Ieee80211HTMCS();
 
         const Ieee80211HTCode* getCode() const { return code; }
@@ -184,25 +183,26 @@ class INET_API Ieee80211HTMCS
         virtual const Ieee80211OFDMModulation* getStreamExtension1Modulation() const { return stream2Modulation; }
         virtual const Ieee80211OFDMModulation* getStreamExtension2Modulation() const { return stream3Modulation; }
         virtual const Ieee80211OFDMModulation* getStreamExtension3Modulation() const { return stream4Modulation; }
-        virtual unsigned int getNumberOfBccEncoders() const { return numberOfBCCEncoders; }
 };
 
 class INET_API Ieee80211HTDataMode : public IIeee80211DataMode, public Ieee80211HTModeBase, public Ieee80211HTTimingRelatedParametersBase
 {
     protected:
         const Ieee80211HTMCS *modulationAndCodingScheme;
+        unsigned int numberOfBccEncoders;
 
     protected:
         bps computeGrossBitrate() const override;
         bps computeNetBitrate() const override;
         unsigned int computeNumberOfSpatialStreams(const Ieee80211OFDMModulation* stream1Modulation, const Ieee80211OFDMModulation* stream2Modulation, const Ieee80211OFDMModulation* stream3Modulation, const Ieee80211OFDMModulation* stream4Modulation) const;
         unsigned int computeNumberOfCodedBitsPerSubcarrierSum() const;
+        unsigned int computeNumberOfBccEncoders() const;
 
     public:
-        Ieee80211HTDataMode(const Ieee80211HTMCS *modulationAndCodingScheme, unsigned int mcsIndex, unsigned int numberOfBCCEncoders, const Ieee80211OFDMModulation* stream1Modulation, const Ieee80211OFDMModulation* stream2Modulation, const Ieee80211OFDMModulation* stream3Modulation, const Ieee80211OFDMModulation* stream4Modulation, const Hz bandwidth, GuardIntervalType guardIntervalType);
+        Ieee80211HTDataMode(const Ieee80211HTMCS *modulationAndCodingScheme, unsigned int mcsIndex, const Ieee80211OFDMModulation* stream1Modulation, const Ieee80211OFDMModulation* stream2Modulation, const Ieee80211OFDMModulation* stream3Modulation, const Ieee80211OFDMModulation* stream4Modulation, const Hz bandwidth, GuardIntervalType guardIntervalType);
 
         inline int getServiceBitLength() const { return 16; }
-        inline int getTailBitLength() const { return 6 * modulationAndCodingScheme->getNumberOfBccEncoders(); }
+        inline int getTailBitLength() const { return 6 * numberOfBccEncoders; }
 
         virtual int getBitLength(int dataBitLength) const override;
         virtual const simtime_t getDuration(int dataBitLength) const override;

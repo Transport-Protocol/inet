@@ -61,31 +61,30 @@ Ieee80211HTSignalMode::Ieee80211HTSignalMode(unsigned int modulationAndCodingSch
 }
 
 
-Ieee80211HTDataMode::Ieee80211HTDataMode(const Ieee80211HTMCS *modulationAndCodingScheme, unsigned int mcsIndex, unsigned int numberOfBCCEncoders, const Ieee80211OFDMModulation* stream1Modulation, const Ieee80211OFDMModulation* stream2Modulation, const Ieee80211OFDMModulation* stream3Modulation, const Ieee80211OFDMModulation* stream4Modulation, const Hz bandwidth, GuardIntervalType guardIntervalType) :
+Ieee80211HTDataMode::Ieee80211HTDataMode(const Ieee80211HTMCS *modulationAndCodingScheme, unsigned int mcsIndex, const Ieee80211OFDMModulation* stream1Modulation, const Ieee80211OFDMModulation* stream2Modulation, const Ieee80211OFDMModulation* stream3Modulation, const Ieee80211OFDMModulation* stream4Modulation, const Hz bandwidth, GuardIntervalType guardIntervalType) :
         Ieee80211HTModeBase(mcsIndex, computeNumberOfSpatialStreams(stream1Modulation,stream2Modulation, stream3Modulation, stream4Modulation), bandwidth, guardIntervalType),
-        modulationAndCodingScheme(modulationAndCodingScheme)
+        modulationAndCodingScheme(modulationAndCodingScheme),
+        numberOfBccEncoders(computeNumberOfBccEncoders())
 {
 }
 
-Ieee80211HTMCS::Ieee80211HTMCS(unsigned int mcsIndex, unsigned int numberOfBCCEncoders, const Ieee80211HTCode* code, const Ieee80211OFDMModulation* stream1Modulation, const Ieee80211OFDMModulation* stream2Modulation, const Ieee80211OFDMModulation* stream3Modulation, const Ieee80211OFDMModulation* stream4Modulation) :
+Ieee80211HTMCS::Ieee80211HTMCS(unsigned int mcsIndex, const Ieee80211HTCode* code, const Ieee80211OFDMModulation* stream1Modulation, const Ieee80211OFDMModulation* stream2Modulation, const Ieee80211OFDMModulation* stream3Modulation, const Ieee80211OFDMModulation* stream4Modulation) :
     mcsIndex(mcsIndex),
     stream1Modulation(stream1Modulation),
     stream2Modulation(stream2Modulation),
     stream3Modulation(stream3Modulation),
     stream4Modulation(stream4Modulation),
-    code(code),
-    numberOfBCCEncoders(numberOfBCCEncoders)
+    code(code)
 {
 }
 
-Ieee80211HTMCS::Ieee80211HTMCS(unsigned int mcsIndex, unsigned int numberOfBCCEncoders, const Ieee80211OFDMModulation* stream1Modulation, const Ieee80211OFDMModulation* stream2Modulation, const Ieee80211OFDMModulation* stream3Modulation, const Ieee80211OFDMModulation* stream4Modulation, const Ieee80211ConvolutionalCode* convolutionalCode, Hz bandwidth) :
+Ieee80211HTMCS::Ieee80211HTMCS(unsigned int mcsIndex, const Ieee80211OFDMModulation* stream1Modulation, const Ieee80211OFDMModulation* stream2Modulation, const Ieee80211OFDMModulation* stream3Modulation, const Ieee80211OFDMModulation* stream4Modulation, const Ieee80211ConvolutionalCode* convolutionalCode, Hz bandwidth) :
     mcsIndex(mcsIndex),
     stream1Modulation(stream1Modulation),
     stream2Modulation(stream2Modulation),
     stream3Modulation(stream3Modulation),
     stream4Modulation(stream4Modulation),
-    code(Ieee80211HTCompliantCodes::getCompliantCode(convolutionalCode, stream1Modulation, stream2Modulation, stream3Modulation, stream4Modulation, bandwidth)),
-    numberOfBCCEncoders(numberOfBCCEncoders)
+    code(Ieee80211HTCompliantCodes::getCompliantCode(convolutionalCode, stream1Modulation, stream2Modulation, stream3Modulation, stream4Modulation, bandwidth))
 {
 }
 
@@ -235,6 +234,13 @@ unsigned int Ieee80211HTDataMode::computeNumberOfCodedBitsPerSubcarrierSum() con
         modulationAndCodingScheme->getStreamExtension1Modulation() ? modulationAndCodingScheme->getStreamExtension1Modulation()->getSubcarrierModulation()->getCodeWordSize() : 0 +
         modulationAndCodingScheme->getStreamExtension2Modulation()? modulationAndCodingScheme->getStreamExtension2Modulation()->getSubcarrierModulation()->getCodeWordSize() : 0 +
         modulationAndCodingScheme->getStreamExtension3Modulation() ? modulationAndCodingScheme->getStreamExtension3Modulation()->getSubcarrierModulation()->getCodeWordSize() : 0;
+}
+
+unsigned int Ieee80211HTDataMode::computeNumberOfBccEncoders() const
+{
+    // When the BCC FEC encoder is used, a single encoder is used, except that two encoders
+    // are used when the selected MCS has a PHY rate greater than 300 Mb/s (see 20.6).
+    return getGrossBitrate() > Mbps(300) ? 2 : 1;
 }
 
 const simtime_t Ieee80211HTDataMode::getDuration(int dataBitLength) const
