@@ -166,13 +166,13 @@ class INET_API Ieee80211HTPreambleMode : public IIeee80211PreambleMode, public I
 class INET_API Ieee80211HTMCS
 {
     protected:
-        unsigned int mcsIndex;
+        const unsigned int mcsIndex;
         const Ieee80211OFDMModulation *stream1Modulation;
         const Ieee80211OFDMModulation *stream2Modulation;
         const Ieee80211OFDMModulation *stream3Modulation;
         const Ieee80211OFDMModulation *stream4Modulation;
         const Ieee80211HTCode *code;
-        Hz bandwidth;
+        const Hz bandwidth;
 
     public:
         Ieee80211HTMCS(unsigned int mcsIndex, const Ieee80211HTCode *code, const Ieee80211OFDMModulation *stream1Modulation, const Ieee80211OFDMModulation *stream2Modulation, const Ieee80211OFDMModulation *stream3Modulation, const Ieee80211OFDMModulation *stream4Modulation);
@@ -194,7 +194,7 @@ class INET_API Ieee80211HTDataMode : public IIeee80211DataMode, public Ieee80211
 {
     protected:
         const Ieee80211HTMCS *modulationAndCodingScheme;
-        unsigned int numberOfBccEncoders;
+        const unsigned int numberOfBccEncoders;
 
     protected:
         bps computeGrossBitrate() const override;
