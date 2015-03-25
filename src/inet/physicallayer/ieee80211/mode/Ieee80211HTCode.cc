@@ -53,7 +53,7 @@ Ieee80211HTCode::~Ieee80211HTCode()
     delete interleaving;
 }
 
-//const Ieee80211ConvolutionalCode Ieee80211HTCompliantCodes::htConvolutionalCode5_6(5,6);
+const Ieee80211ConvolutionalCode Ieee80211HTCompliantCodes::htConvolutionalCode5_6(5,6);
 
 } /* namespace physicallayer */
 } /* namespace inet */
