@@ -165,6 +165,7 @@ cPacket *ICMPSerializer::deserialize(Buffer &b, Context& c)
             cPacket *pp = SerializerBase::lookupAndDeserialize(s, c, ETHERTYPE, ETHERTYPE_IPv4, 0);
             b.accessNBytes(s.getPos());
             pkt->encapsulate(pp);
+            pkt->setByteLength(b.getPos());
             break;
         }
 
@@ -178,9 +179,9 @@ cPacket *ICMPSerializer::deserialize(Buffer &b, Context& c)
             cPacket *pp = SerializerBase::lookupAndDeserialize(s, c, ETHERTYPE, ETHERTYPE_IPv4, 0);
             b.accessNBytes(s.getPos());
             pkt->encapsulate(pp);
+            pkt->setByteLength(b.getPos());
             break;
         }
-
 
         default: {
             EV_ERROR << "Can not parse ICMP packet: type " << type << " not supported.";
