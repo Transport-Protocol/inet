@@ -2698,6 +2698,7 @@ void Ieee80211Mac::sendDown(cMessage *message)
 //        cPacket *deserialized = SerializerBase::lookupAndDeserialize(b, c, LINKTYPE, LINKTYPE_IEEE802_11, 0);
 //        ASSERT(deserialized);
 //        ASSERT(deserialized->getByteLength() == length);
+//        delete[] buffer;
 //    }
     MACProtocolBase::sendDown(message);
 }

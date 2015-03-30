@@ -489,6 +489,29 @@ void EtherMAC::startFrameTransmission()
         updateConnectionColor(TRANSMITTING_STATE);
 
     currentSendPkTreeID = frame->getTreeId();
+
+    {
+        using namespace serializer;
+        int64 length = frame->getByteLength();
+        char *buffer = new char[length];
+        Buffer b(buffer, length);
+        Context c;
+        c.throwOnSerializerNotFound = false;
+        SerializerBase::lookupAndSerialize(frame, b, c, LINKTYPE, LINKTYPE_ETHERNET, 0);
+        ASSERT(b.getPos() == length);
+        b.seek(0);
+        EtherFrame *deserialized = check_and_cast<EtherFrame *>(SerializerBase::lookupAndDeserialize(b, c, LINKTYPE, LINKTYPE_ETHERNET, 0));
+        ASSERT(deserialized);
+        ASSERT(deserialized->getByteLength() == length);
+        char *buffer2 = new char[length];
+        Buffer b2(buffer2, length);
+        SerializerBase::lookupAndSerialize(deserialized, b2, c, LINKTYPE, LINKTYPE_ETHERNET, 0);
+        ASSERT(0 == memcmp(buffer, buffer2, length));
+        delete[] buffer;
+        delete[] buffer2;
+        delete deserialized;
+    }
+
     send(frame, physOutGate);
 
     // check for collisions (there might be an ongoing reception which we don't know about, see below)

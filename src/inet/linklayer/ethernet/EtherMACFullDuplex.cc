@@ -120,6 +120,32 @@ void EtherMACFullDuplex::startFrameTransmission()
     frame->addByteLength(PREAMBLE_BYTES + SFD_BYTES);
 
     // send
+#if 1
+    {
+        using namespace serializer;
+        int64 length = frame->getByteLength();
+        char *buffer = new char[length];
+        Buffer b(buffer, length);
+        Context c;
+        c.throwOnSerializerNotFound = false;
+        SerializerBase::lookupAndSerialize(frame, b, c, LINKTYPE, LINKTYPE_ETHERNET, 0);
+        ASSERT(b.getPos() == length);
+        b.seek(0);
+#if 0
+        EtherFrame *deserialized = check_and_cast<EtherFrame *>(SerializerBase::lookupAndDeserialize(b, c, LINKTYPE, LINKTYPE_ETHERNET, 0));
+        ASSERT(deserialized);
+        ASSERT(deserialized->getByteLength() == length);
+        char *buffer2 = new char[length];
+        Buffer b2(buffer2, length);
+        SerializerBase::lookupAndSerialize(deserialized, b2, c, LINKTYPE, LINKTYPE_ETHERNET, 0);
+        if (memcmp(buffer, buffer2, length))
+            throw cRuntimeError("buffer and buffer2 are differs");
+        delete deserialized;
+        delete[] buffer2;
+#endif
+        delete[] buffer;
+    }
+#endif
     EV_INFO << "Transmission of " << frame << " started.\n";
     if (par("sendSerializedPacket")) {
         using namespace serializer;
@@ -139,6 +165,8 @@ void EtherMACFullDuplex::startFrameTransmission()
     scheduleAt(transmissionChannel->getTransmissionFinishTime(), endTxMsg);
     transmitState = TRANSMITTING_STATE;
 }
+
+
 
 void EtherMACFullDuplex::processFrameFromUpperLayer(EtherFrame *frame)
 {
